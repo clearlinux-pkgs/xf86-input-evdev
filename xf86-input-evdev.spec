@@ -4,7 +4,7 @@
 #
 Name     : xf86-input-evdev
 Version  : 2.9.2
-Release  : 5
+Release  : 6
 URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.9.2.tar.gz
 Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.9.2.tar.gz
 Summary  : X.Org evdev input driver.
