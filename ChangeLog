@@ -1,3 +1,31 @@
+commit 6a3beab6137b262fc847093ed5fa51ff70df6a21
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Fri Jan 8 15:11:59 2016 +1000
+
+    evdev 2.10.1
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit d7e61a7074b802b49f57549530b289bbaa0a4855
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Tue Nov 10 14:35:51 2015 +1000
+
+    Only map x and y to axes 0 and 1
+    
+    The Logitech G600 has one device with all axes north of ABS_MISC. The current
+    code assigns ABS_MISC as first axis to map to axis 0, i.e. x. On button press,
+    one node sends the BTN_LEFT but the other node sends an ABS_MISC with a 1 0
+    value. ABS_MISC is mapped to axis 0, this moves the pointer to (0, y) on
+    every button click.
+    
+    Avoid this by simply mapping any axis other than x/y to at least axis 3, and
+    make sure we only override the MT 0/1 axes when we actually have MT axes.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=92856
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Reviewed-by: Keith Packard <keithp@keithp.com>
+
 commit 01e7ac48546d4534fa420ea1873214e738ea125d
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Wed Oct 28 14:28:20 2015 +1000
