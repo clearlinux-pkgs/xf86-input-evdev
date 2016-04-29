@@ -1,3 +1,83 @@
+commit f12eca9f8392934031cb250e7a2a5ed1d5ca11cf
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Fri Apr 29 09:13:35 2016 +1000
+
+    evdev 2.10.2
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 33dc3d7128456d51b1fe6228096e6b714a3e900b
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Wed Apr 27 09:01:16 2016 +1000
+
+    Prevent buffer overrun accessing btn_labels
+    
+    We go up to BTN_JOYSTICK, hence group can have a value of up to including 15.
+    The actual btn_labels only has 6 elements though.
+    
+    Found by coverity.
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 7b0a65d989117d1b071101221ff1b97c1b4d1946
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Fri Jan 15 14:01:02 2016 +1000
+
+    Don't reset the other axis on wheel emulation scroll buildup
+    
+    The idea was that of a direction lock: as we move vertically we should not
+    build up any horizontal scroll motion even if we move slightly diagonally.
+    
+    The effect was though that the axis would be reset completely as soon as an
+    event from the other axis occured. With the default threshold of 10, if one in
+    ten events was a REL_X, we'd never get a wheel event.
+    
+    Drop this code, it's not needed. By default wheel emulation doesn't do
+    horizontal scrolling, if a config snippet sets XAxisMapping the user wants
+    horizontal scrolling. And since we just add the value anyway, as long as the
+    user does a roughly vertical motion we won't get over the threshold anyway.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=93617
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit d24431a1863c49aa9edcabf535ffa64bfa87053c
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Thu Jan 14 10:41:46 2016 +1000
+
+    Restore wheel emulation for absolute devices
+    
+    Wheel emulation relies on oldVals, which stopped updating in 3dcf6f123c5.
+    
+    Since wheel emulation may filter the abs event, store the event before we do
+    anything with it. If we really want the abs_event, abs_queued will be set to
+    1, otherwise the value will be ignored.
+    
+    And now that we know abs_value is always valied, we can copy its value into
+    old_vals, so that wheel emulation can calculate the delta correctly.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=93617
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit ce7d8fdebc0123227be91ba5d89126a36f089ff5
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Thu Jan 14 11:18:56 2016 +1000
+
+    man: add a warning that wheel emu inertia must be set and it isn't inertia
+    
+    First, it's not actually inertia, it's simply the scroll distance, yay for the
+    misnomer.
+    
+    And it needs to be set for any device that is more fine-grained than a
+    mouse, especially absolute devices. For example the VirtualBox device has an
+    abs max of 32767, so a simple motion may have a delta of to 2000 units and
+    that results in 200 scroll events. That's a bit excessive.
+    
+    Related to: https://bugs.freedesktop.org/show_bug.cgi?id=93617
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
 commit 6a3beab6137b262fc847093ed5fa51ff70df6a21
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Fri Jan 8 15:11:59 2016 +1000
