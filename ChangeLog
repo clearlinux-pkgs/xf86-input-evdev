@@ -1,3 +1,28 @@
+commit 7c1971d9e7b73b861874633a33f97487abf1d45d
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Wed Jun 1 11:41:03 2016 +1000
+
+    evdev 2.10.3
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 9a6952dafe7241d4987eedd4637e5a9785d7ec23
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Thu May 12 15:22:19 2016 +1000
+
+    Restore non-xy axes updates
+    
+    This broke in d24431a1863c49aa Restore wheel emulation for absolute devices,
+    last hunk when the valuator update was moved to before any early exit
+    condition. But that new update only applies to valuator maps < 2, i.e. x/y
+    only. Other valuators are now ignored and remain on 0 forever.
+    
+    Restore the valuator update.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=95315
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
 commit f12eca9f8392934031cb250e7a2a5ed1d5ca11cf
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Fri Apr 29 09:13:35 2016 +1000
