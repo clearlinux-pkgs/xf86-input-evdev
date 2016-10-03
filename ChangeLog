@@ -1,3 +1,45 @@
+commit 551db5b86e2a19e027e57571b8e5405dacb8bd67
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Sat Oct 1 17:48:30 2016 +1000
+
+    evdev 2.10.4
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit bb8bde7456def4186f9a4a0a9f98d53c949e1450
+Author: Keith Packard <keithp@keithp.com>
+Date:   Tue May 31 17:52:43 2016 -0700
+
+    Support XINPUT ABI 24 (remove select mask from block/wakeup handlers)
+    
+    The evdev driver wasn't using the select mask arguments, so this
+    change just involves adjusting the argument lists.
+    
+    Signed-off-by: Keith Packard <keithp@keithp.com>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 7b1267f7f18c478d3dc34a7668eaefa402815891
+Author: Keith Packard <keithp@keithp.com>
+Date:   Tue May 31 17:52:42 2016 -0700
+
+    Support XINPUT ABI version 23 (threaded input)
+    
+    Use input_lock/input_unlock calls instead of SIGIO functions
+    
+    Signed-off-by: Keith Packard <keithp@keithp.com>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit e08b0332761b0cff6d6a3f5d7e88c22f786bd530
+Author: Keith Packard <keithp@keithp.com>
+Date:   Tue May 31 17:52:41 2016 -0700
+
+    Report errors when attempting to write keyboard controls
+    
+    This is mostly to eliminate a compiler warning.
+    
+    Signed-off-by: Keith Packard <keithp@keithp.com>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
 commit 7c1971d9e7b73b861874633a33f97487abf1d45d
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Wed Jun 1 11:41:03 2016 +1000
