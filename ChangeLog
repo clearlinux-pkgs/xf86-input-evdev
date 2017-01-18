@@ -1,3 +1,66 @@
+commit 1dd61111adea1d137877ca1a9642e1552a152355
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Wed Jan 18 13:14:29 2017 +1000
+
+    evdev 2.10.5
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 231061d004ee4e924bb736adc428287367d2001c
+Author: Alexander Volkov <a.volkov@rusbitech.ru>
+Date:   Mon Dec 26 17:39:32 2016 +0300
+
+    Don't send pointer events in addition to touch events
+    
+    Updating abs_vals for touch events since d24431a1863c49aa9edcabf535ffa64bfa87053c
+    leads to posting Motion events with updated coordinates to the X server,
+    which in turn resends them to clients.
+    
+    Don't queue Motion events for touch events, the X server should
+    synthesize them itself.
+    
+    Signed-off-by: Alexander Volkov <a.volkov@rusbitech.ru>
+    Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 425ed6017a42937f69c1e8450ea8f3c6c6c20928
+Author: David Strobach <lalochcz@gmail.com>
+Date:   Thu Nov 17 20:47:31 2016 +0100
+
+    Middle emulation - make the emulated button number configurable
+    
+    Sometimes it may be desirable to remap physical middle button
+    to something else and use emulation instead. The emulation is
+    however hardcoded to emulate physical button 2, so the emulated
+    button gets remapped together with the physical one. This patch
+    adds the Emulate3Button configuration option to allow for user
+    selection of the emulated button number and a configuration
+    like this:
+    
+    Section "InputClass"
+        Identifier "Middle button emulation config"
+        MatchProduct ".... some device ..."
+        MatchDriver "evdev"
+        Option "Emulate3Buttons" "on"
+        Option "Emulate3Button" "9"
+    EndSection
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 7251e42dfbac11eb1619b0a3881ee463b6d76c95
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Fri Oct 21 09:42:23 2016 +1000
+
+    Fix off-by-one error counting axes
+    
+    We stopped counting one too early, but still initialized that axis later,
+    leading to a bug macro to trigger.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=97956
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
 commit 551db5b86e2a19e027e57571b8e5405dacb8bd67
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Sat Oct 1 17:48:30 2016 +1000
@@ -1390,25 +1453,25 @@ Date:   Thu Jan 19 14:17:34 2012 -0800
     (1000, 1000). The third touch begins after the first two end, and is at
     (500, 500).
     
-    ABS_MT_SLOT		0	/* Set touch slot */
-    ABS_MT_TRACKING_ID	0	/* New touch with ID 0 in slot 0 */
-    ABS_MT_POSITION_X	500	/* Initial X position */
-    ABS_MT_POSITION_Y	500	/* Initial Y position */
-    ABS_MT_SLOT		1	/* Set touch slot */
-    ABS_MT_TRACKING_ID	1	/* New touch with ID 1 in slot 1 */
-    ABS_MT_POSITION_X	1000	/* Initial X position */
-    ABS_MT_POSITION_Y	1000	/* Initial Y position */
-    SYNC				/* End of frame */
-    ABS_MT_SLOT		0	/* Go back to slot 0 */
-    ABS_MT_TRACKING_ID	-1	/* Touch in slot 0 ended */
-    ABS_MT_SLOT		1	/* Go to slot 1 */
-    ABS_MT_TRACKING_ID	-1	/* Touch in slot 1 ended */
-    SYNC				/* End of frame */
-    ABS_MT_SLOT		0	/* Go back to slot 0 */
-    ABS_MT_TRACKING_ID	2	/* New touch in slot 0 with ID 2 */
-    SYNC				/* End of frame */
-    ABS_MT_TRACKING_ID	-1	/* Touch in last slot (0) ended */
-    SYNC				/* End of frame */
+    ABS_MT_SLOT             0       /* Set touch slot */
+    ABS_MT_TRACKING_ID      0       /* New touch with ID 0 in slot 0 */
+    ABS_MT_POSITION_X       500     /* Initial X position */
+    ABS_MT_POSITION_Y       500     /* Initial Y position */
+    ABS_MT_SLOT             1       /* Set touch slot */
+    ABS_MT_TRACKING_ID      1       /* New touch with ID 1 in slot 1 */
+    ABS_MT_POSITION_X       1000    /* Initial X position */
+    ABS_MT_POSITION_Y       1000    /* Initial Y position */
+    SYNC                            /* End of frame */
+    ABS_MT_SLOT             0       /* Go back to slot 0 */
+    ABS_MT_TRACKING_ID      -1      /* Touch in slot 0 ended */
+    ABS_MT_SLOT             1       /* Go to slot 1 */
+    ABS_MT_TRACKING_ID      -1      /* Touch in slot 1 ended */
+    SYNC                            /* End of frame */
+    ABS_MT_SLOT             0       /* Go back to slot 0 */
+    ABS_MT_TRACKING_ID      2       /* New touch in slot 0 with ID 2 */
+    SYNC                            /* End of frame */
+    ABS_MT_TRACKING_ID      -1      /* Touch in last slot (0) ended */
+    SYNC                            /* End of frame */
     
     Note that touch 2 has the same X and Y position as touch 0. This is
     implied because no new value was emitted for slot 0. In fact, Linux will
@@ -1890,7 +1953,7 @@ Date:   Wed Nov 9 16:01:48 2011 +1000
     Merge branch 'smooth-scrolling'
     
     Conflicts:
-    	src/evdev.c
+            src/evdev.c
     
     Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
 
@@ -4042,7 +4105,7 @@ Date:   Thu Jul 16 18:25:37 2009 +0300
     Coverity Prevent: NO_EFFECT in EvdevWheelEmuSetProperty:
     
     Event unsigned_compare: Comparing unsigned less than zero is never true. "pEvdev->emulateWheel.timeout < 0UL"
-    342  	            if (pEvdev->emulateWheel.timeout < 0)
+    342                 if (pEvdev->emulateWheel.timeout < 0)
     
     Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
 
@@ -6459,7 +6522,7 @@ Date:   Tue Jun 5 23:14:46 2007 -0400
     
     Conflicts:
     
-    	src/evdev.h
+            src/evdev.h
 
 commit 294355842ba9fb3cb3bbd7bfd60c9ca3ce704475
 Author: Zephaniah E. Hull <warp@agamemnon.b5>
