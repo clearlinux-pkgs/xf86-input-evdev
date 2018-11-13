@@ -1,3 +1,103 @@
+commit 67a97afbc011799e0089f88f562586a33a312684
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Tue May 29 10:05:22 2018 +1000
+
+    evdev 2.10.6
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 2fb95783e04eaf74fa8d051abd94341622a7e01e
+Author: Andrey Zabolotnyi <zapparello@ya.ru>
+Date:   Fri Jan 12 02:26:12 2018 +0300
+
+    Fix generation of proximity-in/out events.
+    
+    Invoking xf86PostProximityEvent with no valuators does nothing, so we
+    have to provide a valid valuator set to the call.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=104562
+    
+    [whot: slight change from 104562
+    abs_vals is reset on every frame but old_vals is kept around to remember the
+    last value of the valuator (and is updated to the current values before
+    processing the frame). We expect the prox in to have x/y, so let's just
+    unconditionally use old_vals for proximity events.]
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 456f23cbbd95eacc682284ffdede54f9a16d0c7d
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Mon May 28 16:00:02 2018 +1000
+
+    Ignore x/y axis changes on proximity out
+    
+    Wacom tablets send a farewell reset to 0 on all axes when the tool goes out of
+    proximity. Ignore those so we can rely on our various valuator masks always
+    having the correct coordinates.
+    
+    Possible false positive if you manage to go out of proximity right above the
+    zero datum but meh.
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit ab1d9adfd34b351190bb10805c4e6b5a5aecd5de
+Author: Christian Gmeiner <christian.gmeiner@gmail.com>
+Date:   Wed Jan 24 13:19:10 2018 +0100
+
+    Print cause of a failed open(..) call
+    
+    This is quite helpful for debugging.
+    
+    Signed-off-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+    Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 192fdb06905f0f190e3a0e258919676934e6633c
+Author: Andrey Zabolotnyi <zapparello@ya.ru>
+Date:   Mon Jan 15 01:32:42 2018 +0300
+
+    Fix handling of devices with only buttons (e.g. tablet pads).
+    
+    When transforming 'only buttons' device into a pseudo-mouse by adding
+    relative X and Y axes, EVDEV_RELATIVE_EVENTS flag  must be set on device,
+    otherwise it gets classified as a keyboard by X11.
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=104630
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 8c1058f2ebd9355068fb1b67329f3428ca64775b
+Author: Mihail Konev <k.mvc@ya.ru>
+Date:   Thu Jan 26 14:00:21 2017 +1000
+
+    autogen: add default patch prefix
+    
+    Signed-off-by: Mihail Konev <k.mvc@ya.ru>
+
+commit 492191237405b3de4eb2df878639c146d61eddb9
+Author: Emil Velikov <emil.l.velikov@gmail.com>
+Date:   Mon Mar 9 12:00:52 2015 +0000
+
+    autogen.sh: use quoted string variables
+    
+    Place quotes around the $srcdir, $ORIGDIR and $0 variables to prevent
+    fall-outs, when they contain space.
+    
+    Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
+    Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+commit 67681097b8d1f485615d9e1dd4f81c64e9829d5c
+Author: Peter Hutterer <peter.hutterer@who-t.net>
+Date:   Tue Jan 24 10:32:07 2017 +1000
+
+    autogen.sh: use exec instead of waiting for configure to finish
+    
+    Syncs the invocation of configure with the one from the server.
+    
+    Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
+
 commit 1dd61111adea1d137877ca1a9642e1552a152355
 Author: Peter Hutterer <peter.hutterer@who-t.net>
 Date:   Wed Jan 18 13:14:29 2017 +1000

@@ -5,18 +5,18 @@
 # Source0 file verified with key 0xE23B7E70B467F0BF (office@who-t.net)
 #
 Name     : xf86-input-evdev
-Version  : 2.10.5
-Release  : 31
-URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.5.tar.gz
-Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.5.tar.gz
-Source99 : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.5.tar.gz.sig
+Version  : 2.10.6
+Release  : 32
+URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
+Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
+Source99 : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz.sig
 Summary  : X.Org evdev input driver.
 Group    : Development/Tools
 License  : MIT
-Requires: xf86-input-evdev-lib
-Requires: xf86-input-evdev-data
-Requires: xf86-input-evdev-license
-Requires: xf86-input-evdev-man
+Requires: xf86-input-evdev-data = %{version}-%{release}
+Requires: xf86-input-evdev-lib = %{version}-%{release}
+Requires: xf86-input-evdev-license = %{version}-%{release}
+Requires: xf86-input-evdev-man = %{version}-%{release}
 BuildRequires : pkgconfig(inputproto)
 BuildRequires : pkgconfig(libevdev)
 BuildRequires : pkgconfig(libudev)
@@ -75,14 +75,14 @@ man components for the xf86-input-evdev package.
 
 
 %prep
-%setup -q -n xf86-input-evdev-2.10.5
+%setup -q -n xf86-input-evdev-2.10.6
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538855616
+export SOURCE_DATE_EPOCH=1542110404
 export CFLAGS="-O3 -g -fopt-info-vec "
 unset LDFLAGS
 %configure --disable-static
@@ -96,10 +96,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1538855616
+export SOURCE_DATE_EPOCH=1542110404
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/xf86-input-evdev
-cp COPYING %{buildroot}/usr/share/doc/xf86-input-evdev/COPYING
+mkdir -p %{buildroot}/usr/share/package-licenses/xf86-input-evdev
+cp COPYING %{buildroot}/usr/share/package-licenses/xf86-input-evdev/COPYING
 %make_install
 
 %files
@@ -120,7 +120,7 @@ cp COPYING %{buildroot}/usr/share/doc/xf86-input-evdev/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/doc/xf86-input-evdev/COPYING
+/usr/share/package-licenses/xf86-input-evdev/COPYING
 
 %files man
 %defattr(0644,root,root,0755)
