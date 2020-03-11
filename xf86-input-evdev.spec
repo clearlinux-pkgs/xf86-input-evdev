@@ -6,11 +6,11 @@
 #
 Name     : xf86-input-evdev
 Version  : 2.10.6
-Release  : 36
-URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
-Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
-Source99 : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz.sig
-Summary  : X.org evdev input driver
+Release  : 37
+URL      : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
+Source0  : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
+Source1  : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz.sig
+Summary  : X.Org evdev input driver.
 Group    : Development/Tools
 License  : MIT
 Requires: xf86-input-evdev-data = %{version}-%{release}
@@ -77,13 +77,15 @@ man components for the xf86-input-evdev package.
 
 %prep
 %setup -q -n xf86-input-evdev-2.10.6
+cd %{_builddir}/xf86-input-evdev-2.10.6
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557104996
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1583959911
+export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
 unset LDFLAGS
 export AR=gcc-ar
@@ -97,17 +99,17 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1557104996
+export SOURCE_DATE_EPOCH=1583959911
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xf86-input-evdev
-cp COPYING %{buildroot}/usr/share/package-licenses/xf86-input-evdev/COPYING
+cp %{_builddir}/xf86-input-evdev-2.10.6/COPYING %{buildroot}/usr/share/package-licenses/xf86-input-evdev/7f673c53e3a7840abd45c5869b6ab8aeb2d34c10
 %make_install
 
 %files
@@ -128,7 +130,7 @@ cp COPYING %{buildroot}/usr/share/package-licenses/xf86-input-evdev/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/xf86-input-evdev/COPYING
+/usr/share/package-licenses/xf86-input-evdev/7f673c53e3a7840abd45c5869b6ab8aeb2d34c10
 
 %files man
 %defattr(0644,root,root,0755)
