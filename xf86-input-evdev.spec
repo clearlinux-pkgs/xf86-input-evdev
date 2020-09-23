@@ -6,7 +6,7 @@
 #
 Name     : xf86-input-evdev
 Version  : 2.10.6
-Release  : 38
+Release  : 39
 URL      : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
 Source0  : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz
 Source1  : https://xorg.freedesktop.org/releases/individual/driver/xf86-input-evdev-2.10.6.tar.gz.sig
